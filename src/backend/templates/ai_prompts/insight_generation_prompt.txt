@@ -1,0 +1,16 @@
+TOTAL BUDGET STATUS:
+Total Budget: ${total_budget}
+Total Spent: ${total_spent}
+Variance: ${total_variance} ({status})
+
+CATEGORY BREAKDOWN:
+{category_breakdown}
+
+Please provide a detailed analysis including:
+1. A clear summary of the overall budget status at the top
+2. Analysis of categories with significant variances (over/under budget)
+3. Spending patterns and trends
+4. Actionable recommendations for improving budget adherence
+5. Positive reinforcement for categories within budget
+
+Format your response as an email with clear sections and bullet points where appropriate. The email should be informative but concise, focusing on the most important insights.
