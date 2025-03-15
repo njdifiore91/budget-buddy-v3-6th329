@@ -1,0 +1,261 @@
+{
+  "log_metrics": [
+    {
+      "name": "api_response_time",
+      "display_name": "API Response Time",
+      "description": "Measures API response times for external service calls",
+      "metric_kind": "GAUGE",
+      "value_type": "DOUBLE",
+      "unit": "ms",
+      "labels": [
+        {
+          "key": "api_name",
+          "description": "Name of the API service (Capital One, Google Sheets, Gemini, Gmail)"
+        },
+        {
+          "key": "operation",
+          "description": "Specific API operation being performed"
+        }
+      ],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.api_response_time_ms != null",
+      "label_extractors": {
+        "api_name": "EXTRACT(jsonPayload.api_name)",
+        "operation": "EXTRACT(jsonPayload.operation)"
+      },
+      "value_extractor": "EXTRACT(jsonPayload.api_response_time_ms)"
+    },
+    {
+      "name": "component_duration",
+      "display_name": "Component Execution Duration",
+      "description": "Measures execution duration of each application component",
+      "metric_kind": "GAUGE",
+      "value_type": "DOUBLE",
+      "unit": "s",
+      "labels": [
+        {
+          "key": "component",
+          "description": "Application component (transaction_retriever, transaction_categorizer, budget_analyzer, insight_generator, report_distributor, savings_automator)"
+        },
+        {
+          "key": "operation",
+          "description": "Specific operation within the component"
+        }
+      ],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component_duration_s != null",
+      "label_extractors": {
+        "component": "EXTRACT(jsonPayload.component)",
+        "operation": "EXTRACT(jsonPayload.operation)"
+      },
+      "value_extractor": "EXTRACT(jsonPayload.component_duration_s)"
+    },
+    {
+      "name": "transaction_count",
+      "display_name": "Transaction Count",
+      "description": "Counts the number of transactions processed",
+      "metric_kind": "GAUGE",
+      "value_type": "INT64",
+      "unit": "1",
+      "labels": [],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component=\"transaction_retriever\" AND jsonPayload.transaction_count != null",
+      "value_extractor": "EXTRACT(jsonPayload.transaction_count)"
+    },
+    {
+      "name": "categorization_accuracy",
+      "display_name": "Transaction Categorization Accuracy",
+      "description": "Measures the percentage of transactions correctly categorized",
+      "metric_kind": "GAUGE",
+      "value_type": "DOUBLE",
+      "unit": "%",
+      "labels": [],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component=\"transaction_categorizer\" AND jsonPayload.categorization_accuracy != null",
+      "value_extractor": "EXTRACT(jsonPayload.categorization_accuracy)"
+    },
+    {
+      "name": "savings_transfer_amount",
+      "display_name": "Savings Transfer Amount",
+      "description": "Records the amount transferred to savings account",
+      "metric_kind": "GAUGE",
+      "value_type": "DOUBLE",
+      "unit": "USD",
+      "labels": [],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component=\"savings_automator\" AND jsonPayload.transfer_amount != null",
+      "value_extractor": "EXTRACT(jsonPayload.transfer_amount)"
+    },
+    {
+      "name": "budget_amount",
+      "display_name": "Budget Amount by Category",
+      "description": "Records the budgeted amount for each category",
+      "metric_kind": "GAUGE",
+      "value_type": "DOUBLE",
+      "unit": "USD",
+      "labels": [
+        {
+          "key": "category",
+          "description": "Budget category name"
+        }
+      ],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component=\"budget_analyzer\" AND jsonPayload.budget_amount != null",
+      "label_extractors": {
+        "category": "EXTRACT(jsonPayload.category)"
+      },
+      "value_extractor": "EXTRACT(jsonPayload.budget_amount)"
+    },
+    {
+      "name": "actual_amount",
+      "display_name": "Actual Spending by Category",
+      "description": "Records the actual spending amount for each category",
+      "metric_kind": "GAUGE",
+      "value_type": "DOUBLE",
+      "unit": "USD",
+      "labels": [
+        {
+          "key": "category",
+          "description": "Budget category name"
+        }
+      ],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component=\"budget_analyzer\" AND jsonPayload.actual_amount != null",
+      "label_extractors": {
+        "category": "EXTRACT(jsonPayload.category)"
+      },
+      "value_extractor": "EXTRACT(jsonPayload.actual_amount)"
+    },
+    {
+      "name": "total_budget",
+      "display_name": "Total Budget Amount",
+      "description": "Records the total budget amount across all categories",
+      "metric_kind": "GAUGE",
+      "value_type": "DOUBLE",
+      "unit": "USD",
+      "labels": [],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component=\"budget_analyzer\" AND jsonPayload.total_budget != null",
+      "value_extractor": "EXTRACT(jsonPayload.total_budget)"
+    },
+    {
+      "name": "total_actual",
+      "display_name": "Total Actual Spending",
+      "description": "Records the total actual spending across all categories",
+      "metric_kind": "GAUGE",
+      "value_type": "DOUBLE",
+      "unit": "USD",
+      "labels": [],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component=\"budget_analyzer\" AND jsonPayload.total_actual != null",
+      "value_extractor": "EXTRACT(jsonPayload.total_actual)"
+    },
+    {
+      "name": "total_variance",
+      "display_name": "Total Budget Variance",
+      "description": "Records the total budget variance (budget - actual)",
+      "metric_kind": "GAUGE",
+      "value_type": "DOUBLE",
+      "unit": "USD",
+      "labels": [],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component=\"budget_analyzer\" AND jsonPayload.total_variance != null",
+      "value_extractor": "EXTRACT(jsonPayload.total_variance)"
+    },
+    {
+      "name": "budget_variance_percentage",
+      "display_name": "Budget Variance Percentage",
+      "description": "Records the budget variance as a percentage of budget",
+      "metric_kind": "GAUGE",
+      "value_type": "DOUBLE",
+      "unit": "%",
+      "labels": [
+        {
+          "key": "category",
+          "description": "Budget category name"
+        }
+      ],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component=\"budget_analyzer\" AND jsonPayload.variance_percentage != null",
+      "label_extractors": {
+        "category": "EXTRACT(jsonPayload.category)"
+      },
+      "value_extractor": "EXTRACT(jsonPayload.variance_percentage)"
+    },
+    {
+      "name": "api_error_count",
+      "display_name": "API Error Count",
+      "description": "Counts API errors by service",
+      "metric_kind": "DELTA",
+      "value_type": "INT64",
+      "unit": "1",
+      "labels": [
+        {
+          "key": "api_name",
+          "description": "Name of the API service (Capital One, Google Sheets, Gemini, Gmail)"
+        },
+        {
+          "key": "error_type",
+          "description": "Type of error encountered"
+        }
+      ],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.severity=\"ERROR\" AND jsonPayload.api_name != null",
+      "label_extractors": {
+        "api_name": "EXTRACT(jsonPayload.api_name)",
+        "error_type": "EXTRACT(jsonPayload.error_type)"
+      }
+    },
+    {
+      "name": "component_error_count",
+      "display_name": "Component Error Count",
+      "description": "Counts errors by application component",
+      "metric_kind": "DELTA",
+      "value_type": "INT64",
+      "unit": "1",
+      "labels": [
+        {
+          "key": "component",
+          "description": "Application component (transaction_retriever, transaction_categorizer, budget_analyzer, insight_generator, report_distributor, savings_automator)"
+        },
+        {
+          "key": "error_type",
+          "description": "Type of error encountered"
+        }
+      ],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.severity=\"ERROR\" AND jsonPayload.component != null",
+      "label_extractors": {
+        "component": "EXTRACT(jsonPayload.component)",
+        "error_type": "EXTRACT(jsonPayload.error_type)"
+      }
+    },
+    {
+      "name": "authentication_failure_count",
+      "display_name": "Authentication Failure Count",
+      "description": "Counts authentication failures",
+      "metric_kind": "DELTA",
+      "value_type": "INT64",
+      "unit": "1",
+      "labels": [
+        {
+          "key": "service",
+          "description": "Service where authentication failed"
+        }
+      ],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.severity=\"ERROR\" AND jsonPayload.message=~\"Authentication failure\"",
+      "label_extractors": {
+        "service": "EXTRACT(jsonPayload.service)"
+      }
+    },
+    {
+      "name": "email_delivery_status",
+      "display_name": "Email Delivery Status",
+      "description": "Tracks email delivery success/failure",
+      "metric_kind": "GAUGE",
+      "value_type": "INT64",
+      "unit": "1",
+      "labels": [],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component=\"report_distributor\" AND jsonPayload.email_delivery_status != null",
+      "value_extractor": "EXTRACT(jsonPayload.email_delivery_status)"
+    },
+    {
+      "name": "transfer_status",
+      "display_name": "Savings Transfer Status",
+      "description": "Tracks savings transfer success/failure",
+      "metric_kind": "GAUGE",
+      "value_type": "INT64",
+      "unit": "1",
+      "labels": [],
+      "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component=\"savings_automator\" AND jsonPayload.transfer_status != null",
+      "value_extractor": "EXTRACT(jsonPayload.transfer_status)"
+    }
+  ]
+}
