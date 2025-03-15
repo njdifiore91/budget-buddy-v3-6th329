@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Groceries",
+    "weekly_amount": "100.00"
+  },
+  {
+    "name": "Transportation",
+    "weekly_amount": "75.00"
+  },
+  {
+    "name": "Dining Out",
+    "weekly_amount": "50.00"
+  },
+  {
+    "name": "Entertainment",
+    "weekly_amount": "40.00"
+  },
+  {
+    "name": "Shopping",
+    "weekly_amount": "60.00"
+  },
+  {
+    "name": "Healthcare",
+    "weekly_amount": "30.00"
+  },
+  {
+    "name": "Utilities",
+    "weekly_amount": "150.00"
+  },
+  {
+    "name": "Subscriptions",
+    "weekly_amount": "25.00"
+  },
+  {
+    "name": "Coffee",
+    "weekly_amount": "15.00"
+  },
+  {
+    "name": "Miscellaneous",
+    "weekly_amount": "20.00"
+  }
+]
