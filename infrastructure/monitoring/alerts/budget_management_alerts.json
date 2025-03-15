@@ -1,0 +1,364 @@
+{
+  "notification_channels": [
+    {
+      "type": "email",
+      "display_name": "Budget Management Admin Email",
+      "email_address": "njdifiore@gmail.com",
+      "description": "Primary notification channel for budget management alerts"
+    },
+    {
+      "type": "email",
+      "display_name": "Budget Management Secondary Email",
+      "email_address": "nick@blitzy.com",
+      "description": "Secondary notification channel for budget management alerts"
+    },
+    {
+      "type": "sms",
+      "display_name": "Budget Management SMS",
+      "phone_number": "+1555XXXXXXX",
+      "description": "SMS notification for critical alerts only"
+    }
+  ],
+  "alert_policies": [
+    {
+      "display_name": "Budget Management - Critical Job Failure",
+      "description": "Alerts when the weekly budget management job fails to complete successfully",
+      "severity": "critical",
+      "notification_channels": ["email", "sms"],
+      "conditions": [
+        {
+          "condition_type": "metric_threshold",
+          "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"run.googleapis.com/job/execution_count\" AND metric.labels.status=\"failed\"",
+          "aggregation": {
+            "alignment_period": "300s",
+            "per_series_aligner": "ALIGN_COUNT",
+            "cross_series_reducer": "REDUCE_SUM",
+            "group_by_fields": []
+          },
+          "comparison": "COMPARISON_GT",
+          "threshold_value": 0,
+          "duration": "0s",
+          "trigger": {
+            "count": 1
+          }
+        }
+      ],
+      "documentation": {
+        "content": "The weekly budget management job has failed. This is critical as it affects the entire budget processing workflow. Check Cloud Run logs for detailed error information.",
+        "mime_type": "text/markdown"
+      },
+      "alert_strategy": {
+        "notification_rate_limit": {
+          "period": "3600s"
+        },
+        "auto_close": "604800s"
+      }
+    },
+    {
+      "display_name": "Budget Management - API Integration Failure",
+      "description": "Alerts when API integration failures occur after maximum retries",
+      "severity": "high",
+      "notification_channels": ["email"],
+      "conditions": [
+        {
+          "condition_type": "log_match",
+          "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.severity=\"ERROR\" AND (jsonPayload.message=~\"API failure after max retries\" OR jsonPayload.message=~\"Authentication failure\")",
+          "aggregation": {
+            "alignment_period": "300s",
+            "per_series_aligner": "ALIGN_COUNT",
+            "cross_series_reducer": "REDUCE_SUM",
+            "group_by_fields": []
+          },
+          "comparison": "COMPARISON_GT",
+          "threshold_value": 0,
+          "duration": "0s",
+          "trigger": {
+            "count": 1
+          }
+        }
+      ],
+      "documentation": {
+        "content": "API integration failures detected after maximum retry attempts. Check logs for specific API and error details. May require manual intervention to resolve authentication or connectivity issues.",
+        "mime_type": "text/markdown"
+      },
+      "alert_strategy": {
+        "notification_rate_limit": {
+          "period": "3600s"
+        },
+        "auto_close": "86400s"
+      }
+    },
+    {
+      "display_name": "Budget Management - Financial Transfer Error",
+      "description": "Alerts when savings transfer operations fail",
+      "severity": "critical",
+      "notification_channels": ["email", "sms"],
+      "conditions": [
+        {
+          "condition_type": "log_match",
+          "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component=\"savings_automator\" AND jsonPayload.severity=\"ERROR\" AND jsonPayload.message=~\"Transfer failure\"",
+          "aggregation": {
+            "alignment_period": "300s",
+            "per_series_aligner": "ALIGN_COUNT",
+            "cross_series_reducer": "REDUCE_SUM",
+            "group_by_fields": []
+          },
+          "comparison": "COMPARISON_GT",
+          "threshold_value": 0,
+          "duration": "0s",
+          "trigger": {
+            "count": 1
+          }
+        }
+      ],
+      "documentation": {
+        "content": "Financial transfer operation has failed. This requires immediate attention as it affects automated savings. Check logs for transfer details and Capital One API status.",
+        "mime_type": "text/markdown"
+      },
+      "alert_strategy": {
+        "notification_rate_limit": {
+          "period": "3600s"
+        },
+        "auto_close": "86400s"
+      }
+    },
+    {
+      "display_name": "Budget Management - Transaction Categorization Accuracy",
+      "description": "Alerts when transaction categorization accuracy falls below threshold",
+      "severity": "medium",
+      "notification_channels": ["email"],
+      "conditions": [
+        {
+          "condition_type": "metric_threshold",
+          "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"custom.googleapis.com/budget_management/categorization_accuracy\"",
+          "aggregation": {
+            "alignment_period": "300s",
+            "per_series_aligner": "ALIGN_MEAN",
+            "cross_series_reducer": "REDUCE_MEAN",
+            "group_by_fields": []
+          },
+          "comparison": "COMPARISON_LT",
+          "threshold_value": 90,
+          "duration": "0s",
+          "trigger": {
+            "count": 1
+          }
+        }
+      ],
+      "documentation": {
+        "content": "Transaction categorization accuracy has fallen below 90%. This may indicate issues with the Gemini AI integration or changes in transaction patterns. Review categorization results and consider updating AI prompts.",
+        "mime_type": "text/markdown"
+      },
+      "alert_strategy": {
+        "notification_rate_limit": {
+          "period": "604800s"
+        },
+        "auto_close": "604800s"
+      }
+    },
+    {
+      "display_name": "Budget Management - Execution Time Warning",
+      "description": "Alerts when job execution time exceeds threshold",
+      "severity": "medium",
+      "notification_channels": ["email"],
+      "conditions": [
+        {
+          "condition_type": "metric_threshold",
+          "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"run.googleapis.com/job/execution_time\"",
+          "aggregation": {
+            "alignment_period": "300s",
+            "per_series_aligner": "ALIGN_MAX",
+            "cross_series_reducer": "REDUCE_MAX",
+            "group_by_fields": []
+          },
+          "comparison": "COMPARISON_GT",
+          "threshold_value": 480,
+          "duration": "0s",
+          "trigger": {
+            "count": 1
+          }
+        }
+      ],
+      "documentation": {
+        "content": "Job execution time has exceeded 8 minutes (480 seconds). This is approaching the 10-minute timeout limit. Investigate potential performance issues or consider increasing the timeout setting.",
+        "mime_type": "text/markdown"
+      },
+      "alert_strategy": {
+        "notification_rate_limit": {
+          "period": "604800s"
+        },
+        "auto_close": "604800s"
+      }
+    },
+    {
+      "display_name": "Budget Management - Memory Usage Warning",
+      "description": "Alerts when memory usage exceeds threshold",
+      "severity": "medium",
+      "notification_channels": ["email"],
+      "conditions": [
+        {
+          "condition_type": "metric_threshold",
+          "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"run.googleapis.com/container/memory/utilization\"",
+          "aggregation": {
+            "alignment_period": "300s",
+            "per_series_aligner": "ALIGN_MAX",
+            "cross_series_reducer": "REDUCE_MAX",
+            "group_by_fields": []
+          },
+          "comparison": "COMPARISON_GT",
+          "threshold_value": 0.85,
+          "duration": "0s",
+          "trigger": {
+            "count": 1
+          }
+        }
+      ],
+      "documentation": {
+        "content": "Memory utilization has exceeded 85% of allocated memory. Consider increasing memory allocation or optimizing memory usage in the application.",
+        "mime_type": "text/markdown"
+      },
+      "alert_strategy": {
+        "notification_rate_limit": {
+          "period": "604800s"
+        },
+        "auto_close": "604800s"
+      }
+    },
+    {
+      "display_name": "Budget Management - Budget Overspend",
+      "description": "Alerts when weekly spending exceeds budget by significant amount",
+      "severity": "medium",
+      "notification_channels": ["email"],
+      "conditions": [
+        {
+          "condition_type": "metric_threshold",
+          "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"custom.googleapis.com/budget_management/budget_variance_percentage\"",
+          "aggregation": {
+            "alignment_period": "300s",
+            "per_series_aligner": "ALIGN_MEAN",
+            "cross_series_reducer": "REDUCE_MEAN",
+            "group_by_fields": []
+          },
+          "comparison": "COMPARISON_LT",
+          "threshold_value": -20,
+          "duration": "0s",
+          "trigger": {
+            "count": 1
+          }
+        }
+      ],
+      "documentation": {
+        "content": "Weekly spending has exceeded budget by more than 20%. This is a business metric alert rather than a technical issue. Review spending patterns and budget allocations.",
+        "mime_type": "text/markdown"
+      },
+      "alert_strategy": {
+        "notification_rate_limit": {
+          "period": "604800s"
+        },
+        "auto_close": "604800s"
+      }
+    },
+    {
+      "display_name": "Budget Management - Email Delivery Failure",
+      "description": "Alerts when weekly report email fails to send",
+      "severity": "high",
+      "notification_channels": ["email"],
+      "conditions": [
+        {
+          "condition_type": "log_match",
+          "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component=\"report_distributor\" AND jsonPayload.severity=\"ERROR\" AND jsonPayload.message=~\"Email delivery failed\"",
+          "aggregation": {
+            "alignment_period": "300s",
+            "per_series_aligner": "ALIGN_COUNT",
+            "cross_series_reducer": "REDUCE_SUM",
+            "group_by_fields": []
+          },
+          "comparison": "COMPARISON_GT",
+          "threshold_value": 0,
+          "duration": "0s",
+          "trigger": {
+            "count": 1
+          }
+        }
+      ],
+      "documentation": {
+        "content": "Weekly budget report email failed to send. Check Gmail API status and credentials. The budget analysis was completed but results were not delivered.",
+        "mime_type": "text/markdown"
+      },
+      "alert_strategy": {
+        "notification_rate_limit": {
+          "period": "3600s"
+        },
+        "auto_close": "86400s"
+      }
+    },
+    {
+      "display_name": "Budget Management - Authentication Failures",
+      "description": "Alerts when multiple authentication failures occur",
+      "severity": "high",
+      "notification_channels": ["email"],
+      "conditions": [
+        {
+          "condition_type": "log_match",
+          "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.severity=\"ERROR\" AND jsonPayload.message=~\"Authentication failure\"",
+          "aggregation": {
+            "alignment_period": "300s",
+            "per_series_aligner": "ALIGN_COUNT",
+            "cross_series_reducer": "REDUCE_SUM",
+            "group_by_fields": []
+          },
+          "comparison": "COMPARISON_GT",
+          "threshold_value": 2,
+          "duration": "0s",
+          "trigger": {
+            "count": 1
+          }
+        }
+      ],
+      "documentation": {
+        "content": "Multiple authentication failures detected. This may indicate expired credentials or API access issues. Check Secret Manager and verify API credentials for all integrated services.",
+        "mime_type": "text/markdown"
+      },
+      "alert_strategy": {
+        "notification_rate_limit": {
+          "period": "3600s"
+        },
+        "auto_close": "86400s"
+      }
+    },
+    {
+      "display_name": "Budget Management - Zero Transactions Warning",
+      "description": "Alerts when no transactions are retrieved",
+      "severity": "medium",
+      "notification_channels": ["email"],
+      "conditions": [
+        {
+          "condition_type": "log_match",
+          "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND jsonPayload.component=\"transaction_retriever\" AND jsonPayload.transaction_count=0 AND jsonPayload.severity=\"WARNING\"",
+          "aggregation": {
+            "alignment_period": "300s",
+            "per_series_aligner": "ALIGN_COUNT",
+            "cross_series_reducer": "REDUCE_SUM",
+            "group_by_fields": []
+          },
+          "comparison": "COMPARISON_GT",
+          "threshold_value": 0,
+          "duration": "0s",
+          "trigger": {
+            "count": 1
+          }
+        }
+      ],
+      "documentation": {
+        "content": "No transactions were retrieved from Capital One API. This could be normal if no spending occurred, but may also indicate an API issue or date range problem.",
+        "mime_type": "text/markdown"
+      },
+      "alert_strategy": {
+        "notification_rate_limit": {
+          "period": "604800s"
+        },
+        "auto_close": "604800s"
+      }
+    }
+  ]
+}
