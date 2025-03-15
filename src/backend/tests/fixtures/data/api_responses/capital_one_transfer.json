@@ -1,0 +1,149 @@
+from datetime import datetime
+from decimal import Decimal
+from typing import Optional
+
+
+class Transfer:
+    """
+    Represents a financial transfer between accounts.
+    
+    This class encapsulates all details related to a money transfer operation,
+    including source and destination accounts, amount, status, and other metadata.
+    Used primarily in the automatic savings transfer feature of the Budget Management Application.
+    """
+    
+    def __init__(
+        self,
+        transfer_id: str,
+        amount: str,
+        source_account_id: str,
+        destination_account_id: str,
+        timestamp: str,
+        status: str,
+        transaction_type: str = "TRANSFER",
+        description: Optional[str] = None,
+        currency: str = "USD",
+        confirmation_code: Optional[str] = None,
+        fee_amount: str = "0.00"
+    ):
+        """
+        Initialize a new Transfer object.
+        
+        Args:
+            transfer_id: Unique identifier for the transfer
+            amount: Amount being transferred (as string, will be converted to Decimal)
+            source_account_id: ID of the source account
+            destination_account_id: ID of the destination account
+            timestamp: ISO-format timestamp when the transfer was executed
+            status: Current status of the transfer (e.g., "completed", "pending")
+            transaction_type: Type of transaction (default: "TRANSFER")
+            description: Human-readable description of the transfer
+            currency: Currency code (default: "USD")
+            confirmation_code: Confirmation code for the transfer
+            fee_amount: Fee amount (as string, will be converted to Decimal, default: "0.00")
+        """
+        self.transfer_id = transfer_id
+        self.amount = Decimal(amount)
+        self.source_account_id = source_account_id
+        self.destination_account_id = destination_account_id
+        self.timestamp = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+        self.status = status
+        self.transaction_type = transaction_type
+        self.description = description or "Budget surplus transfer"
+        self.currency = currency
+        self.confirmation_code = confirmation_code
+        self.fee_amount = Decimal(fee_amount)
+        
+        # Validate critical fields
+        self._validate()
+    
+    def _validate(self):
+        """Validate the transfer data."""
+        if not self.transfer_id:
+            raise ValueError("Transfer ID is required")
+        
+        if self.amount <= 0:
+            raise ValueError("Transfer amount must be positive")
+            
+        if not self.source_account_id:
+            raise ValueError("Source account ID is required")
+            
+        if not self.destination_account_id:
+            raise ValueError("Destination account ID is required")
+            
+        if self.source_account_id == self.destination_account_id:
+            raise ValueError("Source and destination accounts cannot be the same")
+    
+    @property
+    def is_completed(self) -> bool:
+        """Check if the transfer is completed."""
+        return self.status.lower() == "completed"
+    
+    @property
+    def net_amount(self) -> Decimal:
+        """Calculate the net amount after fees."""
+        return self.amount - self.fee_amount
+    
+    def to_dict(self) -> dict:
+        """
+        Convert the transfer object to a dictionary.
+        
+        Returns:
+            dict: Dictionary representation of the transfer
+        """
+        return {
+            "transfer_id": self.transfer_id,
+            "amount": str(self.amount),
+            "sourceAccountId": self.source_account_id,
+            "destinationAccountId": self.destination_account_id,
+            "timestamp": self.timestamp.isoformat().replace('+00:00', 'Z'),
+            "status": self.status,
+            "transactionType": self.transaction_type,
+            "description": self.description,
+            "currency": self.currency,
+            "confirmationCode": self.confirmation_code,
+            "feeAmount": str(self.fee_amount)
+        }
+    
+    @classmethod
+    def from_dict(cls, data: dict) -> 'Transfer':
+        """
+        Create a Transfer object from a dictionary.
+        
+        Args:
+            data: Dictionary containing transfer data
+            
+        Returns:
+            Transfer: New Transfer object
+        """
+        return cls(
+            transfer_id=data.get("transfer_id"),
+            amount=data.get("amount"),
+            source_account_id=data.get("sourceAccountId"),
+            destination_account_id=data.get("destinationAccountId"),
+            timestamp=data.get("timestamp"),
+            status=data.get("status"),
+            transaction_type=data.get("transactionType", "TRANSFER"),
+            description=data.get("description"),
+            currency=data.get("currency", "USD"),
+            confirmation_code=data.get("confirmationCode"),
+            fee_amount=data.get("feeAmount", "0.00")
+        )
+    
+    def __str__(self) -> str:
+        """Return a string representation of the transfer."""
+        return (
+            f"Transfer {self.transfer_id}: {self.currency} {self.amount} "
+            f"from {self.source_account_id} to {self.destination_account_id} "
+            f"({self.status})"
+        )
+    
+    def __repr__(self) -> str:
+        """Return a string representation for debugging."""
+        return (
+            f"Transfer(transfer_id='{self.transfer_id}', "
+            f"amount='{self.amount}', "
+            f"source_account_id='{self.source_account_id}', "
+            f"destination_account_id='{self.destination_account_id}', "
+            f"status='{self.status}')"
+        )
