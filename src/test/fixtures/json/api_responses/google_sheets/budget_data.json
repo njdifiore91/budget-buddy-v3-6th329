@@ -1,0 +1,17 @@
+{
+  "range": "'Master Budget'!A1:B11",
+  "majorDimension": "ROWS",
+  "values": [
+    ["Spending Category", "Weekly Amount"],
+    ["Groceries", "150.00"],
+    ["Dining Out", "75.00"],
+    ["Gas & Fuel", "50.00"],
+    ["Entertainment", "40.00"],
+    ["Shopping", "100.00"],
+    ["Coffee Shops", "20.00"],
+    ["Pharmacy", "25.00"],
+    ["Health & Fitness", "50.00"],
+    ["Home Improvement", "40.00"],
+    ["Subscriptions", "30.00"]
+  ]
+}
