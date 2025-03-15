@@ -1,0 +1,459 @@
+{
+  "displayName": "Budget Management Dashboard",
+  "mosaicLayout": {
+    "columns": 12,
+    "tiles": [
+      {
+        "width": 12,
+        "height": 1,
+        "widget": {
+          "title": "Budget Management Application - System Health",
+          "text": {
+            "content": "This dashboard provides monitoring for the Budget Management Application, a serverless application that automates budget tracking, analysis, and savings allocation on a weekly schedule.",
+            "format": "MARKDOWN"
+          }
+        }
+      },
+      {
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Job Execution Status",
+          "scorecard": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"run.googleapis.com/job/execution_count\"",
+                "aggregation": {
+                  "alignmentPeriod": "604800s",
+                  "perSeriesAligner": "ALIGN_SUM",
+                  "crossSeriesReducer": "REDUCE_SUM",
+                  "groupByFields": ["metric.labels.status"]
+                }
+              },
+              "unitOverride": "1"
+            },
+            "sparkChartView": {
+              "sparkChartType": "SPARK_LINE"
+            },
+            "thresholds": [
+              {
+                "value": 0,
+                "color": "RED",
+                "direction": "BELOW"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Job Execution Duration",
+          "timeSeriesChart": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"run.googleapis.com/job/execution/duration\"",
+                "aggregation": {
+                  "alignmentPeriod": "60s",
+                  "perSeriesAligner": "ALIGN_MEAN"
+                }
+              },
+              "unitOverride": "s"
+            },
+            "yAxis": {
+              "scale": "LINEAR",
+              "label": "Duration (seconds)"
+            },
+            "thresholds": [
+              {
+                "value": 300,
+                "color": "YELLOW",
+                "label": "Target (5 min)"
+              },
+              {
+                "value": 480,
+                "color": "RED",
+                "label": "Warning (8 min)"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "API Integration Health",
+          "pieChart": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"logging.googleapis.com/user/api_error_count\"",
+                "aggregation": {
+                  "alignmentPeriod": "604800s",
+                  "perSeriesAligner": "ALIGN_SUM",
+                  "crossSeriesReducer": "REDUCE_SUM",
+                  "groupByFields": ["metric.labels.api_name"]
+                }
+              },
+              "unitOverride": "1"
+            }
+          }
+        }
+      },
+      {
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "API Response Times",
+          "timeSeriesChart": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"logging.googleapis.com/user/api_response_time\"",
+                "aggregation": {
+                  "alignmentPeriod": "60s",
+                  "perSeriesAligner": "ALIGN_MEAN",
+                  "crossSeriesReducer": "REDUCE_MEAN",
+                  "groupByFields": ["metric.labels.api_name"]
+                }
+              },
+              "unitOverride": "ms"
+            },
+            "yAxis": {
+              "scale": "LINEAR",
+              "label": "Response Time (ms)"
+            },
+            "thresholds": [
+              {
+                "value": 2000,
+                "color": "YELLOW",
+                "label": "Warning (2s)"
+              },
+              {
+                "value": 5000,
+                "color": "RED",
+                "label": "Critical (5s)"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "width": 12,
+        "height": 1,
+        "widget": {
+          "title": "Component Performance",
+          "text": {
+            "content": "Performance metrics for each application component",
+            "format": "MARKDOWN"
+          }
+        }
+      },
+      {
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Component Execution Times",
+          "timeSeriesChart": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"logging.googleapis.com/user/component_duration\"",
+                "aggregation": {
+                  "alignmentPeriod": "60s",
+                  "perSeriesAligner": "ALIGN_MEAN",
+                  "crossSeriesReducer": "REDUCE_MEAN",
+                  "groupByFields": ["metric.labels.component"]
+                }
+              },
+              "unitOverride": "s"
+            },
+            "yAxis": {
+              "scale": "LINEAR",
+              "label": "Duration (seconds)"
+            }
+          }
+        }
+      },
+      {
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Component Error Rates",
+          "timeSeriesChart": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"logging.googleapis.com/user/component_error_count\"",
+                "aggregation": {
+                  "alignmentPeriod": "604800s",
+                  "perSeriesAligner": "ALIGN_SUM",
+                  "crossSeriesReducer": "REDUCE_SUM",
+                  "groupByFields": ["metric.labels.component"]
+                }
+              },
+              "unitOverride": "1"
+            },
+            "yAxis": {
+              "scale": "LINEAR",
+              "label": "Error Count"
+            }
+          }
+        }
+      },
+      {
+        "width": 12,
+        "height": 1,
+        "widget": {
+          "title": "Financial Operations",
+          "text": {
+            "content": "Metrics related to financial operations and budget management",
+            "format": "MARKDOWN"
+          }
+        }
+      },
+      {
+        "width": 4,
+        "height": 4,
+        "widget": {
+          "title": "Transaction Volume",
+          "scorecard": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"logging.googleapis.com/user/transaction_count\"",
+                "aggregation": {
+                  "alignmentPeriod": "604800s",
+                  "perSeriesAligner": "ALIGN_MEAN"
+                }
+              },
+              "unitOverride": "1"
+            },
+            "sparkChartView": {
+              "sparkChartType": "SPARK_LINE"
+            },
+            "thresholds": [
+              {
+                "value": 3,
+                "color": "YELLOW",
+                "direction": "BELOW"
+              },
+              {
+                "value": 1,
+                "color": "RED",
+                "direction": "BELOW"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "width": 4,
+        "height": 4,
+        "widget": {
+          "title": "Categorization Accuracy",
+          "scorecard": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"logging.googleapis.com/user/categorization_accuracy\"",
+                "aggregation": {
+                  "alignmentPeriod": "604800s",
+                  "perSeriesAligner": "ALIGN_MEAN"
+                }
+              },
+              "unitOverride": "%"
+            },
+            "sparkChartView": {
+              "sparkChartType": "SPARK_LINE"
+            },
+            "thresholds": [
+              {
+                "value": 95,
+                "color": "YELLOW",
+                "direction": "BELOW"
+              },
+              {
+                "value": 90,
+                "color": "RED",
+                "direction": "BELOW"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "width": 4,
+        "height": 4,
+        "widget": {
+          "title": "Savings Transfer Amount",
+          "scorecard": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"logging.googleapis.com/user/savings_transfer_amount\"",
+                "aggregation": {
+                  "alignmentPeriod": "604800s",
+                  "perSeriesAligner": "ALIGN_MEAN"
+                }
+              },
+              "unitOverride": "USD"
+            },
+            "sparkChartView": {
+              "sparkChartType": "SPARK_LINE"
+            }
+          }
+        }
+      },
+      {
+        "width": 6,
+        "height": 6,
+        "widget": {
+          "title": "Budget vs. Actual by Category",
+          "timeSeriesChart": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND (metric.type=\"logging.googleapis.com/user/budget_amount\" OR metric.type=\"logging.googleapis.com/user/actual_amount\")",
+                "aggregation": {
+                  "alignmentPeriod": "604800s",
+                  "perSeriesAligner": "ALIGN_MEAN",
+                  "crossSeriesReducer": "REDUCE_MEAN",
+                  "groupByFields": ["metric.labels.category", "metric.type"]
+                }
+              },
+              "unitOverride": "USD"
+            },
+            "yAxis": {
+              "scale": "LINEAR",
+              "label": "Amount (USD)"
+            }
+          }
+        }
+      },
+      {
+        "width": 6,
+        "height": 6,
+        "widget": {
+          "title": "Budget Status Overview",
+          "pieChart": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND (metric.type=\"logging.googleapis.com/user/total_budget\" OR metric.type=\"logging.googleapis.com/user/total_actual\")",
+                "aggregation": {
+                  "alignmentPeriod": "604800s",
+                  "perSeriesAligner": "ALIGN_MEAN",
+                  "crossSeriesReducer": "REDUCE_MEAN",
+                  "groupByFields": ["metric.type"]
+                }
+              },
+              "unitOverride": "USD"
+            }
+          }
+        }
+      },
+      {
+        "width": 12,
+        "height": 1,
+        "widget": {
+          "title": "System Resources",
+          "text": {
+            "content": "Resource utilization metrics for the application",
+            "format": "MARKDOWN"
+          }
+        }
+      },
+      {
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Memory Usage",
+          "timeSeriesChart": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"run.googleapis.com/container/memory/utilizations\"",
+                "aggregation": {
+                  "alignmentPeriod": "60s",
+                  "perSeriesAligner": "ALIGN_MEAN"
+                }
+              },
+              "unitOverride": "%"
+            },
+            "yAxis": {
+              "scale": "LINEAR",
+              "label": "Memory Utilization (%)"
+            },
+            "thresholds": [
+              {
+                "value": 80,
+                "color": "YELLOW",
+                "label": "Warning (80%)"
+              },
+              {
+                "value": 90,
+                "color": "RED",
+                "label": "Critical (90%)"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "CPU Usage",
+          "timeSeriesChart": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND metric.type=\"run.googleapis.com/container/cpu/utilizations\"",
+                "aggregation": {
+                  "alignmentPeriod": "60s",
+                  "perSeriesAligner": "ALIGN_MEAN"
+                }
+              },
+              "unitOverride": "%"
+            },
+            "yAxis": {
+              "scale": "LINEAR",
+              "label": "CPU Utilization (%)"
+            },
+            "thresholds": [
+              {
+                "value": 80,
+                "color": "YELLOW",
+                "label": "Warning (80%)"
+              },
+              {
+                "value": 90,
+                "color": "RED",
+                "label": "Critical (90%)"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "width": 12,
+        "height": 1,
+        "widget": {
+          "title": "Recent Logs",
+          "text": {
+            "content": "Recent warning and error logs for troubleshooting",
+            "format": "MARKDOWN"
+          }
+        }
+      },
+      {
+        "width": 12,
+        "height": 6,
+        "widget": {
+          "title": "Recent Warning and Error Logs",
+          "logsPanel": {
+            "filter": "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"budget-management-job\" AND severity>=WARNING",
+            "resourceNames": ["projects/${project_id}"]
+          }
+        }
+      }
+    ]
+  },
+  "etag": "",
+  "labels": {
+    "application": "budget-management",
+    "environment": "production"
+  }
+}
