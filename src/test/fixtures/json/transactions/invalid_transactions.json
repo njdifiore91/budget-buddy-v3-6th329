@@ -1,0 +1,300 @@
+import logging
+import re
+from datetime import datetime
+from decimal import Decimal, InvalidOperation
+from typing import Dict, List, Any, Tuple, Set, Optional
+
+# Set up logging
+logger = logging.getLogger(__name__)
+
+# Constants for validation
+REQUIRED_FIELDS = ["location", "amount", "timestamp", "transaction_id"]
+DATE_FORMAT = "%Y-%m-%dT%H:%M:%S%z"  # ISO 8601 format with timezone
+FALLBACK_DATE_FORMATS = [
+    "%Y-%m-%dT%H:%M:%S",  # ISO 8601 without timezone
+    "%Y-%m-%d %H:%M:%S",   # Simple datetime format
+    "%Y-%m-%d",            # Just date
+]
+
+class TransactionValidationError(Exception):
+    """Exception raised for transaction validation errors."""
+    pass
+
+def validate_string_field(value: Any, field_name: str) -> Tuple[bool, str, Optional[str]]:
+    """
+    Validate a string field.
+    
+    Args:
+        value: The value to validate
+        field_name: The name of the field being validated
+        
+    Returns:
+        Tuple of (is_valid, error_message, normalized_value)
+    """
+    if value is None:
+        return False, f"{field_name} cannot be None", None
+    
+    if not isinstance(value, str):
+        # Try to convert to string
+        try:
+            normalized = str(value)
+            return True, f"{field_name} converted from {type(value).__name__} to string", normalized
+        except:
+            return False, f"{field_name} must be a string, got {type(value).__name__}", None
+    
+    if value.strip() == "":
+        return False, f"{field_name} cannot be empty", None
+    
+    return True, "", value
+
+def validate_amount(value: Any) -> Tuple[bool, str, Optional[str]]:
+    """
+    Validate transaction amount.
+    
+    Args:
+        value: The amount value to validate
+        
+    Returns:
+        Tuple of (is_valid, error_message, normalized_value)
+    """
+    if value is None:
+        return False, "amount cannot be None", None
+    
+    # If not a string, try to convert
+    if not isinstance(value, str):
+        try:
+            value = str(value)
+        except:
+            return False, f"amount must be a string, got {type(value).__name__}", None
+    
+    # Check if it's a valid decimal
+    try:
+        amount_decimal = Decimal(value)
+        
+        # Check if it's positive
+        if amount_decimal <= 0:
+            return False, f"amount must be positive, got {value}", None
+        
+        # Normalize to 2 decimal places
+        normalized = f"{amount_decimal:.2f}"
+        return True, "", normalized
+    except InvalidOperation:
+        return False, f"amount must be a valid number, got '{value}'", None
+
+def validate_timestamp(value: Any) -> Tuple[bool, str, Optional[str]]:
+    """
+    Validate transaction timestamp.
+    
+    Args:
+        value: The timestamp value to validate
+        
+    Returns:
+        Tuple of (is_valid, error_message, normalized_value)
+    """
+    if value is None:
+        return False, "timestamp cannot be None", None
+    
+    if not isinstance(value, str):
+        try:
+            value = str(value)
+        except:
+            return False, f"timestamp must be a string, got {type(value).__name__}", None
+    
+    # Try to parse with primary format
+    try:
+        dt = datetime.strptime(value, DATE_FORMAT)
+        return True, "", value
+    except ValueError:
+        # Try fallback formats
+        for format_str in FALLBACK_DATE_FORMATS:
+            try:
+                dt = datetime.strptime(value, format_str)
+                # Convert to primary format
+                normalized = dt.strftime(DATE_FORMAT)
+                return True, f"timestamp format converted to ISO 8601", normalized
+            except ValueError:
+                continue
+        
+        return False, f"timestamp must be in a valid date format, got '{value}'", None
+
+def validate_transaction_id(value: Any) -> Tuple[bool, str, Optional[str]]:
+    """
+    Validate transaction ID.
+    
+    Args:
+        value: The transaction ID to validate
+        
+    Returns:
+        Tuple of (is_valid, error_message, normalized_value)
+    """
+    is_valid, error_msg, normalized = validate_string_field(value, "transaction_id")
+    
+    if not is_valid:
+        return is_valid, error_msg, normalized
+    
+    # Additional validation could be added here (e.g., format requirements)
+    
+    return True, "", normalized
+
+def validate_transaction(transaction: Dict[str, Any]) -> Tuple[bool, Dict[str, str], Dict[str, Any]]:
+    """
+    Validate a single transaction object.
+    
+    Args:
+        transaction: The transaction dictionary to validate
+        
+    Returns:
+        Tuple of (is_valid, errors_dict, normalized_transaction)
+    """
+    if not transaction:
+        return False, {"transaction": "Transaction object cannot be empty"}, {}
+    
+    if not isinstance(transaction, dict):
+        return False, {"transaction": f"Transaction must be a dictionary, got {type(transaction).__name__}"}, {}
+    
+    errors = {}
+    normalized = {}
+    
+    # Check required fields exist
+    for field in REQUIRED_FIELDS:
+        if field not in transaction:
+            errors[field] = f"Missing required field: {field}"
+    
+    # If missing required fields, return early
+    if errors:
+        return False, errors, normalized
+    
+    # Validate each field
+    location_valid, location_error, normalized_location = validate_string_field(
+        transaction.get("location"), "location"
+    )
+    if not location_valid:
+        errors["location"] = location_error
+    else:
+        normalized["location"] = normalized_location
+    
+    amount_valid, amount_error, normalized_amount = validate_amount(transaction.get("amount"))
+    if not amount_valid:
+        errors["amount"] = amount_error
+    else:
+        normalized["amount"] = normalized_amount
+    
+    timestamp_valid, timestamp_error, normalized_timestamp = validate_timestamp(transaction.get("timestamp"))
+    if not timestamp_valid:
+        errors["timestamp"] = timestamp_error
+    else:
+        normalized["timestamp"] = normalized_timestamp
+    
+    tx_id_valid, tx_id_error, normalized_tx_id = validate_transaction_id(transaction.get("transaction_id"))
+    if not tx_id_valid:
+        errors["transaction_id"] = tx_id_error
+    else:
+        normalized["transaction_id"] = normalized_tx_id
+    
+    # Include description if present
+    if "description" in transaction:
+        desc_valid, desc_error, normalized_desc = validate_string_field(
+            transaction.get("description"), "description"
+        )
+        # Description is optional, so only include if valid
+        if desc_valid:
+            normalized["description"] = normalized_desc
+    
+    is_valid = len(errors) == 0
+    
+    return is_valid, errors, normalized
+
+def validate_transactions(transactions: List[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], Dict[str, int]]:
+    """
+    Validate a list of transactions.
+    
+    Args:
+        transactions: List of transaction dictionaries
+        
+    Returns:
+        Tuple of (valid_transactions, invalid_transactions, validation_stats)
+    """
+    if not isinstance(transactions, list):
+        raise TransactionValidationError(f"Expected a list of transactions, got {type(transactions).__name__}")
+    
+    valid_transactions = []
+    invalid_transactions = []
+    seen_transaction_ids = set()
+    duplicate_count = 0
+    
+    validation_stats = {
+        "total": len(transactions),
+        "valid": 0,
+        "invalid": 0,
+        "duplicates": 0,
+        "empty": 0,
+        "missing_fields": 0,
+        "invalid_format": 0
+    }
+    
+    for idx, transaction in enumerate(transactions):
+        # Skip empty transactions
+        if not transaction:
+            invalid_transactions.append({
+                "transaction": transaction,
+                "errors": {"transaction": "Transaction object cannot be empty"},
+                "index": idx
+            })
+            validation_stats["empty"] += 1
+            validation_stats["invalid"] += 1
+            continue
+        
+        # Validate the transaction
+        is_valid, errors, normalized = validate_transaction(transaction)
+        
+        # Check for duplicate transaction_id
+        if is_valid and normalized["transaction_id"] in seen_transaction_ids:
+            is_valid = False
+            errors["transaction_id"] = f"Duplicate transaction_id: {normalized['transaction_id']}"
+            duplicate_count += 1
+            validation_stats["duplicates"] += 1
+        
+        if is_valid:
+            seen_transaction_ids.add(normalized["transaction_id"])
+            valid_transactions.append(normalized)
+            validation_stats["valid"] += 1
+        else:
+            # Categorize the error
+            if any("Missing required field" in msg for field, msg in errors.items()):
+                validation_stats["missing_fields"] += 1
+            else:
+                validation_stats["invalid_format"] += 1
+            
+            invalid_transactions.append({
+                "transaction": transaction,
+                "errors": errors,
+                "index": idx
+            })
+            validation_stats["invalid"] += 1
+    
+    return valid_transactions, invalid_transactions, validation_stats
+
+def log_validation_results(valid_transactions: List[Dict[str, Any]], 
+                          invalid_transactions: List[Dict[str, Any]], 
+                          validation_stats: Dict[str, int]) -> None:
+    """
+    Log the results of transaction validation.
+    
+    Args:
+        valid_transactions: List of valid transactions
+        invalid_transactions: List of invalid transactions
+        validation_stats: Validation statistics
+    """
+    logger.info(f"Transaction validation complete: "
+                f"{validation_stats['valid']}/{validation_stats['total']} valid transactions")
+    
+    if validation_stats["invalid"] > 0:
+        logger.warning(f"Found {validation_stats['invalid']} invalid transactions:")
+        logger.warning(f"  - Empty: {validation_stats['empty']}")
+        logger.warning(f"  - Missing fields: {validation_stats['missing_fields']}")
+        logger.warning(f"  - Invalid format: {validation_stats['invalid_format']}")
+        logger.warning(f"  - Duplicates: {validation_stats['duplicates']}")
+    
+    for invalid in invalid_transactions:
+        logger.warning(f"Invalid transaction at index {invalid['index']}: {invalid['errors']}")
+        logger.debug(f"Transaction data: {invalid['transaction']}")
