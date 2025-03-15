@@ -1,0 +1,54 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "# Weekly Budget Update: $45.67 under budget\n\nGreat job this week! You've managed to stay under your total budget by $45.67, which is excellent progress toward your financial goals.\n\n## Category Analysis\n\n### Areas of Success\n- **Entertainment**: You're 50% under budget in this category, saving $25.00. This shows excellent restraint in discretionary spending.\n- **Transportation**: You've spent $44.48 out of your $60.00 budget, saving $15.52 (25.9%). Your transportation choices are helping your bottom line.\n- **Groceries**: You've kept grocery spending to $87.50, which is $12.50 (12.5%) under your budget of $100.00. Good job finding savings on essentials.\n\n### Areas for Improvement\n- **Dining Out**: You've gone over budget by $7.35 (9.8%), spending $82.35 against your $75.00 budget. This is a common area where spending can creep up.\n\n## Spending Patterns & Trends\n\nYour overall spending pattern shows good discipline, with 3 out of 4 categories under budget. The slight overspending in Dining Out is offset by significant savings in Entertainment and Transportation.\n\n## Recommendations\n\n1. **Dining Out**: Consider setting a per-meal budget when eating out, or designate specific days for dining out to better control this expense.\n\n2. **Entertainment**: Since you're significantly under budget here, you might consider whether you're depriving yourself unnecessarily or if you've found free alternatives that are working well.\n\n3. **Savings Allocation**: Your $45.67 surplus will be automatically transferred to your savings account, helping build your financial cushion.\n\n## Looking Ahead\n\nMaintain your current approach to grocery shopping and transportation, as these are working well. For next week, pay special attention to dining expenses by tracking them in real-time rather than waiting for the weekly summary.\n\nKeep up the good work!\n\n---\n\nThis is an automated report from your Budget Management Application. Your weekly surplus has been automatically transferred to your savings account."
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0,
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE"
+        },
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "probability": "NEGLIGIBLE"
+        },
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "probability": "NEGLIGIBLE"
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "probability": "NEGLIGIBLE"
+        }
+      ]
+    }
+  ],
+  "promptFeedback": {
+    "safetyRatings": [
+      {
+        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+        "probability": "NEGLIGIBLE"
+      },
+      {
+        "category": "HARM_CATEGORY_HATE_SPEECH",
+        "probability": "NEGLIGIBLE"
+      },
+      {
+        "category": "HARM_CATEGORY_HARASSMENT",
+        "probability": "NEGLIGIBLE"
+      },
+      {
+        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+        "probability": "NEGLIGIBLE"
+      }
+    ]
+  }
+}
