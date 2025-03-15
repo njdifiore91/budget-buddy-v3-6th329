@@ -1,0 +1,176 @@
+"""
+Budget data fixtures for testing budget analysis functionality.
+
+This module provides predefined budget and spending data for testing budget analysis
+components. It includes various scenarios such as surplus, deficit, and balanced budgets.
+
+Version: 1.0.0
+"""
+
+from typing import Dict, List, Any
+from decimal import Decimal
+
+# Budget categories with weekly allocated amounts
+CATEGORIES = [
+    {"name": "Groceries", "weekly_amount": "100.00"},
+    {"name": "Dining Out", "weekly_amount": "75.00"},
+    {"name": "Coffee Shops", "weekly_amount": "20.00"},
+    {"name": "Gas & Fuel", "weekly_amount": "50.00"},
+    {"name": "Entertainment", "weekly_amount": "40.00"},
+    {"name": "Shopping", "weekly_amount": "60.00"},
+    {"name": "Health & Fitness", "weekly_amount": "30.00"},
+    {"name": "Pharmacy", "weekly_amount": "25.00"},
+    {"name": "Home Improvement", "weekly_amount": "35.00"},
+    {"name": "Subscriptions", "weekly_amount": "15.00"},
+    {"name": "Utilities", "weekly_amount": "125.00"},
+    {"name": "Transportation", "weekly_amount": "45.00"}
+]
+
+# Actual spending by category
+ACTUAL_SPENDING = {
+    "Groceries": "75.42",
+    "Gas & Fuel": "45.67",
+    "Coffee Shops": "5.25",
+    "Dining Out": "32.50",
+    "Shopping": "89.99",
+    "Pharmacy": "23.75",
+    "Entertainment": "28.50",
+    "Utilities": "125.00",
+    "Health & Fitness": "50.00",
+    "Transportation": "40.00"
+}
+
+# Expected analysis results for standard scenario
+EXPECTED_ANALYSIS = {
+    "category_variances": {
+        "Groceries": "24.58",
+        "Dining Out": "42.50",
+        "Coffee Shops": "14.75",
+        "Gas & Fuel": "4.33",
+        "Entertainment": "11.50",
+        "Shopping": "-29.99",
+        "Health & Fitness": "-20.00",
+        "Pharmacy": "1.25",
+        "Home Improvement": "35.00",
+        "Subscriptions": "15.00",
+        "Utilities": "0.00",
+        "Transportation": "5.00"
+    },
+    "total_budget": "620.00",
+    "total_spent": "516.08",
+    "total_variance": "103.92",
+    "status": "surplus",
+    "transfer_amount": "103.92"
+}
+
+# Data structure for Google Sheet
+SHEET_DATA = [
+    ["Spending Category", "Weekly Amount"],
+    ["Groceries", "100.00"],
+    ["Dining Out", "75.00"],
+    ["Coffee Shops", "20.00"],
+    ["Gas & Fuel", "50.00"],
+    ["Entertainment", "40.00"],
+    ["Shopping", "60.00"],
+    ["Health & Fitness", "30.00"],
+    ["Pharmacy", "25.00"],
+    ["Home Improvement", "35.00"],
+    ["Subscriptions", "15.00"],
+    ["Utilities", "125.00"],
+    ["Transportation", "45.00"]
+]
+
+# Test scenarios for different budget situations
+TEST_SCENARIOS = {
+    "surplus": {
+        "total_budget": "620.00",
+        "total_spent": "516.08",
+        "total_variance": "103.92",
+        "transfer_amount": "103.92"
+    },
+    "deficit": {
+        "total_budget": "620.00",
+        "total_spent": "720.00",
+        "total_variance": "-100.00",
+        "transfer_amount": "0.00"
+    },
+    "zero_balance": {
+        "total_budget": "620.00",
+        "total_spent": "620.00",
+        "total_variance": "0.00",
+        "transfer_amount": "0.00"
+    },
+    "small_surplus": {
+        "total_budget": "620.00",
+        "total_spent": "619.50",
+        "total_variance": "0.50",
+        "transfer_amount": "0.00"
+    }
+}
+
+def get_budget_categories() -> List[Dict[str, str]]:
+    """
+    Get the list of budget categories with their weekly amounts.
+    
+    Returns:
+        List[Dict[str, str]]: List of category dictionaries with name and weekly_amount.
+    """
+    return CATEGORIES
+
+def get_actual_spending() -> Dict[str, str]:
+    """
+    Get the actual spending by category.
+    
+    Returns:
+        Dict[str, str]: Dictionary mapping category names to actual spending amounts.
+    """
+    return ACTUAL_SPENDING
+
+def get_expected_analysis() -> Dict[str, Any]:
+    """
+    Get the expected analysis results for testing.
+    
+    Returns:
+        Dict[str, Any]: Expected budget analysis results.
+    """
+    return EXPECTED_ANALYSIS
+
+def get_sheet_data() -> List[List[str]]:
+    """
+    Get the sheet data structure for testing.
+    
+    Returns:
+        List[List[str]]: Sheet data as rows and columns.
+    """
+    return SHEET_DATA
+
+def get_test_scenario(scenario: str) -> Dict[str, str]:
+    """
+    Get a specific test scenario.
+    
+    Args:
+        scenario: The scenario name ('surplus', 'deficit', 'zero_balance', or 'small_surplus').
+        
+    Returns:
+        Dict[str, str]: The test scenario data.
+        
+    Raises:
+        ValueError: If an invalid scenario name is provided.
+    """
+    if scenario not in TEST_SCENARIOS:
+        valid_scenarios = ", ".join(TEST_SCENARIOS.keys())
+        raise ValueError(f"Invalid scenario: {scenario}. Valid options are: {valid_scenarios}")
+    
+    return TEST_SCENARIOS[scenario]
+
+def convert_to_decimal(value_dict: Dict[str, str]) -> Dict[str, Decimal]:
+    """
+    Convert string values in a dictionary to Decimal objects.
+    
+    Args:
+        value_dict: Dictionary with string values representing decimal numbers.
+        
+    Returns:
+        Dict[str, Decimal]: Dictionary with values converted to Decimal objects.
+    """
+    return {k: Decimal(v) for k, v in value_dict.items()}
