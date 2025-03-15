@@ -1,0 +1,141 @@
+{
+  "authentication_error": {
+    "error": {
+      "code": 401,
+      "message": "Invalid API key or authentication token",
+      "status": "UNAUTHENTICATED",
+      "details": [
+        {
+          "reason": "API_KEY_INVALID",
+          "domain": "googleapis.com",
+          "metadata": {
+            "service": "generativelanguage.googleapis.com"
+          }
+        }
+      ]
+    }
+  },
+  "rate_limit_error": {
+    "error": {
+      "code": 429,
+      "message": "Resource has been exhausted (e.g. quota exceeded)",
+      "status": "RESOURCE_EXHAUSTED",
+      "details": [
+        {
+          "reason": "RATE_LIMIT_EXCEEDED",
+          "domain": "googleapis.com",
+          "metadata": {
+            "service": "generativelanguage.googleapis.com",
+            "quota_limit": "requests-per-min-per-user",
+            "quota_metric": "generativelanguage.googleapis.com/requests",
+            "consumer": "projects/123456",
+            "retry_delay_seconds": "30"
+          }
+        }
+      ]
+    }
+  },
+  "invalid_request_error": {
+    "error": {
+      "code": 400,
+      "message": "Invalid request format or parameters",
+      "status": "INVALID_ARGUMENT",
+      "details": [
+        {
+          "reason": "INVALID_ARGUMENT",
+          "domain": "googleapis.com",
+          "metadata": {
+            "service": "generativelanguage.googleapis.com",
+            "field": "generation_config.temperature"
+          }
+        }
+      ]
+    }
+  },
+  "model_error": {
+    "error": {
+      "code": 400,
+      "message": "The model failed to process the request",
+      "status": "FAILED_PRECONDITION",
+      "details": [
+        {
+          "reason": "MODEL_ERROR",
+          "domain": "googleapis.com",
+          "metadata": {
+            "service": "generativelanguage.googleapis.com",
+            "model": "gemini-pro"
+          }
+        }
+      ]
+    }
+  },
+  "server_error": {
+    "error": {
+      "code": 500,
+      "message": "Internal server error",
+      "status": "INTERNAL",
+      "details": [
+        {
+          "reason": "INTERNAL_ERROR",
+          "domain": "googleapis.com",
+          "metadata": {
+            "service": "generativelanguage.googleapis.com"
+          }
+        }
+      ]
+    }
+  },
+  "timeout_error": {
+    "error": {
+      "code": 504,
+      "message": "Request timeout exceeded",
+      "status": "DEADLINE_EXCEEDED",
+      "details": [
+        {
+          "reason": "DEADLINE_EXCEEDED",
+          "domain": "googleapis.com",
+          "metadata": {
+            "service": "generativelanguage.googleapis.com"
+          }
+        }
+      ]
+    }
+  },
+  "content_filter_error": {
+    "error": {
+      "code": 400,
+      "message": "Content filtered due to safety settings",
+      "status": "FAILED_PRECONDITION",
+      "details": [
+        {
+          "reason": "SAFETY_FILTER",
+          "domain": "googleapis.com",
+          "metadata": {
+            "service": "generativelanguage.googleapis.com"
+          }
+        }
+      ]
+    },
+    "promptFeedback": {
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "probability": "HIGH"
+        },
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "probability": "NEGLIGIBLE"
+        },
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "probability": "NEGLIGIBLE"
+        },
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE"
+        }
+      ],
+      "blockReason": "SAFETY"
+    }
+  }
+}
