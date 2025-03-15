@@ -1,0 +1,82 @@
+[
+  {
+    "location": "Grocery Store",
+    "amount": "45.67",
+    "timestamp": "2023-07-20T14:30:00-04:00",
+    "transaction_id": "tx_12345",
+    "description": "Weekly grocery shopping",
+    "category": "Groceries"
+  },
+  {
+    "location": "Gas Station",
+    "amount": "35.82",
+    "timestamp": "2023-07-19T10:15:00-04:00",
+    "transaction_id": "tx_12346",
+    "description": "Fuel",
+    "category": "Gas & Fuel"
+  },
+  {
+    "location": "Coffee Shop",
+    "amount": "4.50",
+    "timestamp": "2023-07-21T08:45:00-04:00",
+    "transaction_id": "tx_12347",
+    "description": "Morning coffee",
+    "category": "Coffee Shops"
+  },
+  {
+    "location": "Restaurant",
+    "amount": "28.75",
+    "timestamp": "2023-07-18T19:30:00-04:00",
+    "transaction_id": "tx_12348",
+    "description": "Dinner",
+    "category": "Dining Out"
+  },
+  {
+    "location": "Online Retailer",
+    "amount": "67.99",
+    "timestamp": "2023-07-17T15:20:00-04:00",
+    "transaction_id": "tx_12349",
+    "description": "Household items",
+    "category": "Shopping"
+  },
+  {
+    "location": "Pharmacy",
+    "amount": "12.34",
+    "timestamp": "2023-07-20T11:10:00-04:00",
+    "transaction_id": "tx_12350",
+    "description": "Prescription",
+    "category": "Pharmacy"
+  },
+  {
+    "location": "Movie Theater",
+    "amount": "15.00",
+    "timestamp": "2023-07-22T19:00:00-04:00",
+    "transaction_id": "tx_12351",
+    "description": "Movie ticket",
+    "category": "Entertainment"
+  },
+  {
+    "location": "Public Transit",
+    "amount": "2.75",
+    "timestamp": "2023-07-21T07:30:00-04:00",
+    "transaction_id": "tx_12352",
+    "description": "Bus fare",
+    "category": "Entertainment"
+  },
+  {
+    "location": "Gym",
+    "amount": "50.00",
+    "timestamp": "2023-07-15T08:00:00-04:00",
+    "transaction_id": "tx_12353",
+    "description": "Monthly membership",
+    "category": "Health & Fitness"
+  },
+  {
+    "location": "Hardware Store",
+    "amount": "23.45",
+    "timestamp": "2023-07-16T14:15:00-04:00",
+    "transaction_id": "tx_12354",
+    "description": "Home repair supplies",
+    "category": "Home Improvement"
+  }
+]
