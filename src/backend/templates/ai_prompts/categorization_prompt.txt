@@ -1,0 +1,10 @@
+TRANSACTION LOCATIONS:
+{transaction_locations}
+
+VALID BUDGET CATEGORIES:
+{budget_categories}
+
+For each transaction location, respond with the location followed by the best matching category in this format:
+"Location: [transaction location] -> Category: [matching category]"
+
+If you're unsure about a category, choose the most likely one based on the transaction location. Every transaction must be assigned to exactly one category from the provided list.
