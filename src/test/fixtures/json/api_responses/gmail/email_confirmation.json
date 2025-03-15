@@ -1,0 +1,123 @@
+{
+  "id": "message-id-12345abcdef",
+  "threadId": "thread-id-12345abcdef",
+  "labelIds": [
+    "SENT"
+  ],
+  "snippet": "Your weekly budget report",
+  "sizeEstimate": 25678,
+  "historyId": "9876543",
+  "internalDate": "1625097600000",
+  "payload": {
+    "partId": "",
+    "mimeType": "multipart/related",
+    "filename": "",
+    "headers": [
+      {
+        "name": "From",
+        "value": "njdifiore@gmail.com"
+      },
+      {
+        "name": "To",
+        "value": "njdifiore@gmail.com, nick@blitzy.com"
+      },
+      {
+        "name": "Subject",
+        "value": "Budget Update: $45.67 under budget this week"
+      },
+      {
+        "name": "MIME-Version",
+        "value": "1.0"
+      },
+      {
+        "name": "Date",
+        "value": "Thu, 1 Jul 2023 12:00:00 -0400"
+      },
+      {
+        "name": "Content-Type",
+        "value": "multipart/related; boundary=\"boundary_12345\""
+      }
+    ],
+    "body": {
+      "size": 0
+    },
+    "parts": [
+      {
+        "partId": "0",
+        "mimeType": "text/html",
+        "filename": "",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "text/html; charset=UTF-8"
+          },
+          {
+            "name": "Content-Transfer-Encoding",
+            "value": "base64"
+          }
+        ],
+        "body": {
+          "size": 15234,
+          "data": "PGh0bWw+PGJvZHk+PGgxPldlZWtseSBCdWRnZXQgVXBkYXRlPC9oMT48cD5Zb3UgYXJlICQ0NS42NyB1bmRlciBidWRnZXQgdGhpcyB3ZWVrLjwvcD48L2JvZHk+PC9odG1sPg=="
+        }
+      },
+      {
+        "partId": "1",
+        "mimeType": "image/png",
+        "filename": "budget_overview_chart.png",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "image/png"
+          },
+          {
+            "name": "Content-Transfer-Encoding",
+            "value": "base64"
+          },
+          {
+            "name": "Content-ID",
+            "value": "<budget_overview_chart>"
+          },
+          {
+            "name": "Content-Disposition",
+            "value": "inline"
+          }
+        ],
+        "body": {
+          "size": 8765,
+          "attachmentId": "attachment-id-budget-chart"
+        }
+      },
+      {
+        "partId": "2",
+        "mimeType": "image/png",
+        "filename": "category_comparison_chart.png",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "image/png"
+          },
+          {
+            "name": "Content-Transfer-Encoding",
+            "value": "base64"
+          },
+          {
+            "name": "Content-ID",
+            "value": "<category_comparison_chart>"
+          },
+          {
+            "name": "Content-Disposition",
+            "value": "inline"
+          }
+        ],
+        "body": {
+          "size": 10234,
+          "attachmentId": "attachment-id-category-chart"
+        }
+      }
+    ]
+  },
+  "raw": "",
+  "status": "success",
+  "message_id": "message-id-12345abcdef"
+}
