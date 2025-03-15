@@ -1,0 +1,32 @@
+# GitHub workflow to scan pull requests for vulnerable dependencies
+name: Dependency Review
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/backend/requirements.txt'
+      - 'src/scripts/requirements.txt'
+      - 'src/test/requirements.txt'
+      - '.github/workflows/**'
+      - 'src/backend/Dockerfile'
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v3
+        with:
+          # Fail on high severity vulnerabilities
+          fail-on-severity: high
+          # Prevent introduction of dependencies with certain licenses
+          deny-licenses: GPL-3.0, AGPL-3.0
+          # Reference to configuration file for additional settings
+          config-file: .github/dependency-review-config.yml
