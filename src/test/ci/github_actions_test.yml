@@ -1,0 +1,123 @@
+# GitHub Actions workflow configuration for testing the CI/CD pipeline of the Budget Management Application.
+# This workflow mirrors the production CI workflow but is specifically designed for testing pipeline functionality and integration points.
+name: Budget Management CI Test
+
+# Define workflow triggers
+on:
+  workflow_dispatch: # Allows manual triggering
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'src/test/ci/**'
+      - '.github/workflows/**'
+  push:
+    branches:
+      - test-ci
+    paths:
+      - 'src/test/ci/**'
+      - '.github/workflows/**'
+
+# Define environment variables
+env:
+  PYTHONPATH: ${{ github.workspace }}
+  PYTEST_ADDOPTS: '--color=yes'
+  TEST_ENVIRONMENT: github-actions
+
+# Define jobs
+jobs:
+  # Job to test the pipeline configuration
+  test-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3 # actions/checkout v3
+      - name: Set up Python
+        uses: actions/setup-python@v4 # actions/setup-python v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r src/test/requirements.txt
+      - name: Run linting
+        run: flake8 src/test/ci
+      - name: Run unit tests
+        run: pytest src/test/ci -v
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2 # docker/setup-buildx-action v2
+      - name: Build test Docker image
+        uses: docker/build-push-action@v4 # docker/build-push-action v4
+        with:
+          context: ./src/test
+          file: ./src/test/docker/Dockerfile.test
+          push: false
+          load: true
+          tags: budget-management-test:latest
+      - name: Run test pipeline validation
+        run: python src/test/ci/test_pipeline.py --validate-github-actions
+
+  # Job to test compatibility across different OS and Python versions
+  test-matrix:
+    needs: [test-pipeline]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ['3.9', '3.10', '3.11']
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3 # actions/checkout v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4 # actions/setup-python v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: pip install -r src/test/requirements.txt
+      - name: Run pipeline tests
+        run: python src/test/ci/test_pipeline.py --test-compatibility
+
+  # Job to perform integration testing with mock services
+  integration-test:
+    needs: [test-pipeline]
+    runs-on: ubuntu-latest
+    services:
+      mock-capital-one:
+        image: wiremock/wiremock:latest
+        ports:
+          - 8081:8080
+        volumes:
+          - ./src/test/fixtures/json/api_responses/capital_one:/home/wiremock/mappings
+      mock-google-sheets:
+        image: wiremock/wiremock:latest
+        ports:
+          - 8082:8080
+        volumes:
+          - ./src/test/fixtures/json/api_responses/google_sheets:/home/wiremock/mappings
+      mock-gemini:
+        image: wiremock/wiremock:latest
+        ports:
+          - 8083:8080
+        volumes:
+          - ./src/test/fixtures/json/api_responses/gemini:/home/wiremock/mappings
+      mock-gmail:
+        image: wiremock/wiremock:latest
+        ports:
+          - 8084:8080
+        volumes:
+          - ./src/test/fixtures/json/api_responses/gmail:/home/wiremock/mappings
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3 # actions/checkout v3
+      - name: Set up Python
+        uses: actions/setup-python@v4 # actions/setup-python v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r src/test/requirements.txt
+      - name: Run integration tests
+        run: python src/test/ci/test_pipeline.py --test-integration
+        env:
+          CAPITAL_ONE_API_URL: http://localhost:8081
+          GOOGLE_SHEETS_API_URL: http://localhost:8082
+          GEMINI_API_URL: http://localhost:8083
+          GMAIL_API_URL: http://localhost:8084
+          TEST_ENVIRONMENT: github-actions
