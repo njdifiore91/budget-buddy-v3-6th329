@@ -1,0 +1,16 @@
+{
+  "range": "Master Budget!A2:B",
+  "majorDimension": "ROWS",
+  "values": [
+    ["Groceries", "150.00"],
+    ["Dining Out", "100.00"],
+    ["Entertainment", "75.00"],
+    ["Transportation", "50.00"],
+    ["Shopping", "100.00"],
+    ["Utilities", "200.00"],
+    ["Subscriptions", "50.00"],
+    ["Healthcare", "75.00"],
+    ["Personal Care", "50.00"],
+    ["Miscellaneous", "50.00"]
+  ]
+}
