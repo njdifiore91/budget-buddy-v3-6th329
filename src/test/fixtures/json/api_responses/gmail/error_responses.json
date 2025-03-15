@@ -1,0 +1,109 @@
+{
+  "authentication_error": {
+    "error": {
+      "errors": [
+        {
+          "domain": "global",
+          "reason": "authError",
+          "message": "Invalid Credentials"
+        }
+      ],
+      "code": 401,
+      "message": "Invalid Credentials"
+    }
+  },
+  "permission_denied": {
+    "error": {
+      "errors": [
+        {
+          "domain": "global",
+          "reason": "forbidden",
+          "message": "Insufficient permissions for this operation"
+        }
+      ],
+      "code": 403,
+      "message": "Insufficient permissions for this operation"
+    }
+  },
+  "rate_limit_exceeded": {
+    "error": {
+      "errors": [
+        {
+          "domain": "global",
+          "reason": "rateLimitExceeded",
+          "message": "Rate Limit Exceeded. Try again in 30 seconds."
+        }
+      ],
+      "code": 429,
+      "message": "Rate Limit Exceeded",
+      "details": {
+        "retryAfter": 30
+      }
+    }
+  },
+  "invalid_argument": {
+    "error": {
+      "errors": [
+        {
+          "domain": "global",
+          "reason": "invalidArgument",
+          "message": "Invalid email format in recipient field"
+        }
+      ],
+      "code": 400,
+      "message": "Invalid email format in recipient field"
+    }
+  },
+  "server_error": {
+    "error": {
+      "errors": [
+        {
+          "domain": "global",
+          "reason": "backendError",
+          "message": "Backend server error. Please try again later."
+        }
+      ],
+      "code": 500,
+      "message": "Backend server error"
+    }
+  },
+  "quota_exceeded": {
+    "error": {
+      "errors": [
+        {
+          "domain": "global",
+          "reason": "quotaExceeded",
+          "message": "Daily quota exceeded for Gmail API. Limit: 100 requests/day."
+        }
+      ],
+      "code": 403,
+      "message": "Daily quota exceeded for Gmail API"
+    }
+  },
+  "attachment_size_exceeded": {
+    "error": {
+      "errors": [
+        {
+          "domain": "global",
+          "reason": "sizeLimitExceeded",
+          "message": "Attachment size exceeds the 25MB limit"
+        }
+      ],
+      "code": 413,
+      "message": "Attachment size exceeds the 25MB limit"
+    }
+  },
+  "invalid_recipient": {
+    "error": {
+      "errors": [
+        {
+          "domain": "global",
+          "reason": "invalidRecipient",
+          "message": "The recipient email address is invalid or doesn't exist"
+        }
+      ],
+      "code": 400,
+      "message": "Invalid recipient email address"
+    }
+  }
+}
