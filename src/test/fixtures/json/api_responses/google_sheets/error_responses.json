@@ -1,0 +1,113 @@
+{
+  "authentication_error": {
+    "error": {
+      "code": 401,
+      "message": "Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential.",
+      "status": "UNAUTHENTICATED",
+      "details": [
+        {
+          "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+          "reason": "AUTHENTICATION_REQUIRED",
+          "domain": "googleapis.com",
+          "metadata": {
+            "service": "sheets.googleapis.com",
+            "method": "google.apps.sheets.v4.SpreadsheetsService.Get"
+          }
+        }
+      ]
+    }
+  },
+  "permission_denied_error": {
+    "error": {
+      "code": 403,
+      "message": "The caller does not have permission to access the spreadsheet.",
+      "status": "PERMISSION_DENIED",
+      "details": [
+        {
+          "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+          "reason": "ACCESS_DENIED",
+          "domain": "googleapis.com",
+          "metadata": {
+            "service": "sheets.googleapis.com",
+            "method": "google.apps.sheets.v4.SpreadsheetsService.Get"
+          }
+        }
+      ]
+    }
+  },
+  "not_found_error": {
+    "error": {
+      "code": 404,
+      "message": "Requested entity was not found.",
+      "status": "NOT_FOUND",
+      "details": [
+        {
+          "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+          "reason": "NOT_FOUND",
+          "domain": "googleapis.com",
+          "metadata": {
+            "service": "sheets.googleapis.com",
+            "method": "google.apps.sheets.v4.SpreadsheetsService.Get"
+          }
+        }
+      ]
+    }
+  },
+  "rate_limit_error": {
+    "error": {
+      "code": 429,
+      "message": "Quota exceeded for quota metric 'Queries' and limit 'Queries per minute per user' of service 'sheets.googleapis.com'.",
+      "status": "RESOURCE_EXHAUSTED",
+      "details": [
+        {
+          "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+          "reason": "RATE_LIMIT_EXCEEDED",
+          "domain": "googleapis.com",
+          "metadata": {
+            "service": "sheets.googleapis.com",
+            "method": "google.apps.sheets.v4.SpreadsheetsService.Get",
+            "quota_limit": "QueriesPerMinutePerUser",
+            "quota_metric": "sheets.googleapis.com/requests",
+            "consumer": "projects/123456789"
+          }
+        }
+      ]
+    }
+  },
+  "invalid_request_error": {
+    "error": {
+      "code": 400,
+      "message": "Invalid request: The provided range 'Invalid Range!' is not valid for spreadsheet.",
+      "status": "INVALID_ARGUMENT",
+      "details": [
+        {
+          "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+          "reason": "INVALID_ARGUMENT",
+          "domain": "googleapis.com",
+          "metadata": {
+            "service": "sheets.googleapis.com",
+            "method": "google.apps.sheets.v4.SpreadsheetsService.Get"
+          }
+        }
+      ]
+    }
+  },
+  "server_error": {
+    "error": {
+      "code": 500,
+      "message": "Internal error encountered.",
+      "status": "INTERNAL",
+      "details": [
+        {
+          "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+          "reason": "INTERNAL_ERROR",
+          "domain": "googleapis.com",
+          "metadata": {
+            "service": "sheets.googleapis.com",
+            "method": "google.apps.sheets.v4.SpreadsheetsService.Get"
+          }
+        }
+      ]
+    }
+  }
+}
