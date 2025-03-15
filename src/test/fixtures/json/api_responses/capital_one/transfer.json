@@ -1,0 +1,19 @@
+{
+  "transferId": "tr_12345abcdef",
+  "amount": "45.67",
+  "sourceAccountId": "acct_checking123",
+  "destinationAccountId": "acct_savings456",
+  "status": "pending",
+  "timestamp": "2023-07-23T14:30:45Z",
+  "requestId": "req_78901ghijkl",
+  "transactionType": "account_transfer",
+  "processingDetails": {
+    "processingTime": "2023-07-23T14:30:45Z",
+    "estimatedCompletionTime": "2023-07-23T14:35:45Z"
+  },
+  "links": {
+    "self": "/transfers/tr_12345abcdef",
+    "source": "/accounts/acct_checking123",
+    "destination": "/accounts/acct_savings456"
+  }
+}
