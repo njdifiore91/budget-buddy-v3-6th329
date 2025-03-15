@@ -1,0 +1,156 @@
+# GitHub Actions workflow configuration for continuous integration of the Budget Management Application.
+# This workflow automates the build, test, and quality assurance process to ensure code reliability and maintainability.
+name: Budget Management CI
+
+# Define workflow triggers
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/backend/**'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'src/backend/**'
+  workflow_dispatch: # Allows manual triggering
+
+# Define environment variables
+env:
+  PYTHON_VERSION: '3.11'
+  COVERAGE_THRESHOLD: '85'
+  DOCKER_IMAGE: 'budget-management'
+
+# Define jobs
+jobs:
+  # Job to perform linting
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3 # actions/checkout v3
+      - name: Set up Python
+        uses: actions/setup-python@v4 # actions/setup-python v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Cache pip dependencies
+        uses: actions/cache@v3 # actions/cache v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('src/backend/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Install dependencies
+        run: pip install -r src/backend/requirements.txt
+      - name: Run black
+        run: black --check src/backend
+      - name: Run isort
+        run: isort --check-only --profile black src/backend
+      - name: Run flake8
+        run: flake8 src/backend
+      - name: Run mypy
+        run: mypy src/backend
+
+  # Job to perform testing
+  test:
+    runs-on: ubuntu-latest
+    needs: [lint]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3 # actions/checkout v3
+      - name: Set up Python
+        uses: actions/setup-python@v4 # actions/setup-python v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Cache pip dependencies
+        uses: actions/cache@v3 # actions/cache v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('src/backend/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Install dependencies
+        run: pip install -r src/backend/requirements.txt
+      - name: Run unit tests
+        run: pytest src/backend/tests/unit --cov=src/backend --cov-report=xml --cov-report=term
+      - name: Run integration tests
+        run: pytest src/backend/tests/integration --cov=src/backend --cov-append --cov-report=xml --cov-report=term
+      - name: Check coverage threshold
+        run: coverage report --fail-under=${{ env.COVERAGE_THRESHOLD }}
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3 # codecov/codecov-action v3
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: true
+
+  # Job to perform security scanning
+  security-scan:
+    runs-on: ubuntu-latest
+    needs: [lint]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3 # actions/checkout v3
+      - name: Set up Python
+        uses: actions/setup-python@v4 # actions/setup-python v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install safety
+        run: pip install safety
+      - name: Check dependencies for vulnerabilities
+        run: safety check -r src/backend/requirements.txt
+      - name: Install bandit
+        run: pip install bandit
+      - name: Run bandit security scan
+        run: bandit -r src/backend -x src/backend/tests
+
+  # Job to build Docker image
+  build:
+    runs-on: ubuntu-latest
+    needs: [test, security-scan]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3 # actions/checkout v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2 # docker/setup-buildx-action v2
+      - name: Build Docker image
+        uses: docker/build-push-action@v4 # docker/build-push-action v4
+        with:
+          context: ./src/backend
+          file: ./src/backend/Dockerfile
+          push: false
+          load: true
+          tags: ${{ env.DOCKER_IMAGE }}:${{ github.sha }},${{ env.DOCKER_IMAGE }}:latest
+      - name: Scan image for vulnerabilities
+        uses: aquasecurity/trivy-action@0.11.0 # aquasecurity/trivy-action 0.11.0
+        with:
+          image-ref: ${{ env.DOCKER_IMAGE }}:${{ github.sha }}
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
+
+  # Job to perform end-to-end testing
+  e2e-test:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3 # actions/checkout v3
+      - name: Set up Python
+        uses: actions/setup-python@v4 # actions/setup-python v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install test dependencies
+        run: pip install -r src/test/requirements.txt
+      - name: Run end-to-end tests
+        run: pytest src/test/e2e --env=ci
+
+  # Job to indicate CI pipeline success
+  ci-success:
+    runs-on: ubuntu-latest
+    needs: [lint, test, security-scan, build, e2e-test]
+    steps:
+      - name: CI Pipeline Success
+        run: echo 'CI pipeline completed successfully!'
