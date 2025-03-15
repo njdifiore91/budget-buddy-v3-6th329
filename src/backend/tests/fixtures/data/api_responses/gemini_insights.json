@@ -1,0 +1,54 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "<h2>Weekly Budget Update</h2>\n\n<p><strong>Great job this week!</strong> You're <span style=\"color: green;\">$45.67 under budget</span>, which means you've successfully managed your spending and have funds to transfer to your savings account.</p>\n\n<h3>Category Analysis</h3>\n\n<p><strong>Areas where you did well:</strong></p>\n<ul>\n  <li><strong>Groceries:</strong> You spent $82.45 of your $100.00 budget, saving $17.55. Good job sticking to your grocery list!</li>\n  <li><strong>Gas & Fuel:</strong> You spent $38.75 of your $50.00 budget, saving $11.25. Your fuel efficiency efforts are paying off.</li>\n  <li><strong>Entertainment:</strong> You spent $32.50 of your $40.00 budget, saving $7.50. You're enjoying yourself while staying within limits.</li>\n</ul>\n\n<p><strong>Areas for improvement:</strong></p>\n<ul>\n  <li><strong>Dining Out:</strong> You spent $89.32 of your $75.00 budget, going over by $14.32. Consider cooking one more meal at home next week.</li>\n  <li><strong>Coffee Shops:</strong> You spent $23.45 of your $20.00 budget, going over by $3.45. Small daily purchases add up quickly.</li>\n</ul>\n\n<h3>Spending Patterns & Trends</h3>\n\n<p>Your spending on essential categories (Groceries, Gas, Pharmacy) remains well-controlled at 30% below budget. Weekend spending continues to be your biggest challenge, with most Dining Out expenses occurring Friday through Sunday.</p>\n\n<h3>Recommendations</h3>\n\n<ol>\n  <li>Consider preparing a few meals ahead for the weekend to reduce dining out expenses.</li>\n  <li>Your coffee shop spending is only slightly over budget - perhaps bring a travel mug for a discount or make coffee at home one additional day.</li>\n  <li>Continue your excellent grocery shopping habits - your list-making strategy is working well.</li>\n  <li>The $45.67 surplus will be automatically transferred to your savings account, bringing you closer to your financial goals.</li>\n</ol>\n\n<p>Keep up the good work! Your consistent budget management is building strong financial habits.</p>"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0,
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE"
+        },
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "probability": "NEGLIGIBLE"
+        },
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "probability": "NEGLIGIBLE"
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "probability": "NEGLIGIBLE"
+        }
+      ]
+    }
+  ],
+  "promptFeedback": {
+    "safetyRatings": [
+      {
+        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+        "probability": "NEGLIGIBLE"
+      },
+      {
+        "category": "HARM_CATEGORY_HATE_SPEECH",
+        "probability": "NEGLIGIBLE"
+      },
+      {
+        "category": "HARM_CATEGORY_HARASSMENT",
+        "probability": "NEGLIGIBLE"
+      },
+      {
+        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+        "probability": "NEGLIGIBLE"
+      }
+    ]
+  }
+}
