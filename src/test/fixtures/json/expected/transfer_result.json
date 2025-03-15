@@ -1,0 +1,22 @@
+{
+    "status": "success",
+    "transfer": {
+        "amount": "50.00",
+        "source_account_id": "checking_account_123",
+        "destination_account_id": "savings_account_456",
+        "transfer_id": "transfer_789",
+        "status": "completed",
+        "timestamp": "2023-07-23T12:30:45.000Z"
+    },
+    "verification": {
+        "verified": true,
+        "verification_timestamp": "2023-07-23T12:31:15.000Z"
+    },
+    "metadata": {
+        "correlation_id": "budget-mgmt-2023-07-23-12-00-00",
+        "execution_time_ms": 1250,
+        "budget_surplus": "50.00",
+        "transfer_successful": true
+    },
+    "message": "Successfully transferred $50.00 from checking to savings account"
+}
