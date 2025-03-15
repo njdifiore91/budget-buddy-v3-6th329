@@ -1,0 +1,67 @@
+{
+  "transactions": [
+    {
+      "transactionId": "tx_12345abcdef",
+      "location": "Grocery Store",
+      "amount": "45.67",
+      "timestamp": "2023-07-20T14:30:45Z",
+      "description": "POS Purchase",
+      "status": "completed",
+      "accountId": "acct_checking123"
+    },
+    {
+      "transactionId": "tx_23456bcdefg",
+      "location": "Gas Station",
+      "amount": "35.82",
+      "timestamp": "2023-07-19T10:15:22Z",
+      "description": "Fuel Purchase",
+      "status": "completed",
+      "accountId": "acct_checking123"
+    },
+    {
+      "transactionId": "tx_34567cdefgh",
+      "location": "Coffee Shop",
+      "amount": "4.50",
+      "timestamp": "2023-07-18T08:45:12Z",
+      "description": "POS Purchase",
+      "status": "completed",
+      "accountId": "acct_checking123"
+    },
+    {
+      "transactionId": "tx_45678defghi",
+      "location": "Restaurant",
+      "amount": "65.30",
+      "timestamp": "2023-07-17T19:20:33Z",
+      "description": "Dining",
+      "status": "completed",
+      "accountId": "acct_checking123"
+    },
+    {
+      "transactionId": "tx_56789efghij",
+      "location": "Online Retailer",
+      "amount": "29.99",
+      "timestamp": "2023-07-16T15:10:05Z",
+      "description": "Online Purchase",
+      "status": "completed",
+      "accountId": "acct_checking123"
+    },
+    {
+      "transactionId": "tx_67890fghijk",
+      "location": "Pharmacy",
+      "amount": "12.75",
+      "timestamp": "2023-07-15T11:30:45Z",
+      "description": "Health & Wellness",
+      "status": "completed",
+      "accountId": "acct_checking123"
+    },
+    {
+      "transactionId": "tx_78901ghijkl",
+      "location": "Utility Company",
+      "amount": "85.42",
+      "timestamp": "2023-07-14T09:00:00Z",
+      "description": "Bill Payment",
+      "status": "completed",
+      "accountId": "acct_checking123"
+    }
+  ]
+}
