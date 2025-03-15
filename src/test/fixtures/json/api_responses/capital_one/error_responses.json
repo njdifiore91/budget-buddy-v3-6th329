@@ -1,0 +1,61 @@
+{
+  "authentication_error": {
+    "error": "unauthorized",
+    "error_description": "Invalid or expired access token",
+    "status_code": 401
+  },
+  
+  "rate_limit_error": {
+    "error": "too_many_requests",
+    "error_description": "Rate limit exceeded. Please slow down your request rate.",
+    "status_code": 429,
+    "retry_after": 30
+  },
+  
+  "server_error": {
+    "error": "internal_server_error",
+    "error_description": "An unexpected error occurred while processing your request. Please try again later.",
+    "status_code": 500
+  },
+  
+  "validation_error": {
+    "error": "validation_failed",
+    "error_description": "The request contains invalid parameters.",
+    "status_code": 400,
+    "validation_errors": [
+      {
+        "field": "amount",
+        "message": "Amount must be greater than zero"
+      },
+      {
+        "field": "destination_account_id",
+        "message": "Destination account ID is required"
+      }
+    ]
+  },
+  
+  "account_not_found_error": {
+    "error": "resource_not_found",
+    "error_description": "The specified account was not found.",
+    "status_code": 404
+  },
+  
+  "insufficient_funds_error": {
+    "error": "insufficient_funds",
+    "error_description": "The source account does not have sufficient funds for this transfer.",
+    "status_code": 400
+  },
+  
+  "transfer_failed_error": {
+    "error": "transfer_failed",
+    "error_description": "The transfer could not be completed due to a processing error.",
+    "status_code": 500,
+    "transfer_id": "tr-98765432"
+  },
+  
+  "token_expired_error": {
+    "error": "invalid_token",
+    "error_description": "The access token has expired. Please refresh your token.",
+    "status_code": 401
+  }
+}
