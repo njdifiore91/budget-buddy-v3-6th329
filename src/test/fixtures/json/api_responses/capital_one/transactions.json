@@ -1,0 +1,74 @@
+{
+  "transactions": [
+    {
+      "transactionId": "tx_12345abcde",
+      "accountId": "acct_checking123",
+      "location": "Grocery Store",
+      "amount": "45.67",
+      "timestamp": "2023-07-20T14:30:45Z",
+      "description": "POS Purchase - Grocery Store",
+      "category": "Groceries",
+      "status": "POSTED"
+    },
+    {
+      "transactionId": "tx_23456bcdef",
+      "accountId": "acct_checking123",
+      "location": "Gas Station",
+      "amount": "35.82",
+      "timestamp": "2023-07-19T10:15:22Z",
+      "description": "POS Purchase - Gas Station",
+      "category": "Automotive",
+      "status": "POSTED"
+    },
+    {
+      "transactionId": "tx_34567cdefg",
+      "accountId": "acct_checking123",
+      "location": "Coffee Shop",
+      "amount": "4.50",
+      "timestamp": "2023-07-18T08:45:30Z",
+      "description": "POS Purchase - Coffee Shop",
+      "category": "Dining",
+      "status": "POSTED"
+    },
+    {
+      "transactionId": "tx_45678defgh",
+      "accountId": "acct_checking123",
+      "location": "Amazon",
+      "amount": "29.99",
+      "timestamp": "2023-07-17T16:20:10Z",
+      "description": "Online Purchase - Amazon",
+      "category": "Shopping",
+      "status": "POSTED"
+    },
+    {
+      "transactionId": "tx_56789efghi",
+      "accountId": "acct_checking123",
+      "location": "Pharmacy",
+      "amount": "12.75",
+      "timestamp": "2023-07-16T13:05:55Z",
+      "description": "POS Purchase - Pharmacy",
+      "category": "Health",
+      "status": "POSTED"
+    },
+    {
+      "transactionId": "tx_67890fghij",
+      "accountId": "acct_checking123",
+      "location": "Restaurant",
+      "amount": "65.30",
+      "timestamp": "2023-07-15T19:45:20Z",
+      "description": "POS Purchase - Restaurant",
+      "category": "Dining",
+      "status": "POSTED"
+    },
+    {
+      "transactionId": "tx_78901ghijk",
+      "accountId": "acct_checking123",
+      "location": "Movie Theater",
+      "amount": "24.00",
+      "timestamp": "2023-07-14T20:30:15Z",
+      "description": "POS Purchase - Movie Theater",
+      "category": "Entertainment",
+      "status": "POSTED"
+    }
+  ]
+}
