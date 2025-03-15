@@ -1,0 +1,72 @@
+[
+  {
+    "location": "Grocery Store",
+    "amount": "75.42",
+    "timestamp": "2023-07-15T14:30:00Z",
+    "transaction_id": "tx_12345",
+    "description": "Weekly grocery shopping"
+  },
+  {
+    "location": "Gas Station",
+    "amount": "45.67",
+    "timestamp": "2023-07-16T10:15:00Z",
+    "transaction_id": "tx_12346",
+    "description": "Fuel"
+  },
+  {
+    "location": "Coffee Shop",
+    "amount": "5.25",
+    "timestamp": "2023-07-17T08:45:00Z",
+    "transaction_id": "tx_12347",
+    "description": "Morning coffee"
+  },
+  {
+    "location": "Restaurant",
+    "amount": "32.50",
+    "timestamp": "2023-07-17T19:30:00Z",
+    "transaction_id": "tx_12348",
+    "description": "Dinner"
+  },
+  {
+    "location": "Online Retailer",
+    "amount": "89.99",
+    "timestamp": "2023-07-18T15:20:00Z",
+    "transaction_id": "tx_12349",
+    "description": "Household items"
+  },
+  {
+    "location": "Pharmacy",
+    "amount": "23.75",
+    "timestamp": "2023-07-19T11:10:00Z",
+    "transaction_id": "tx_12350",
+    "description": "Prescription"
+  },
+  {
+    "location": "Movie Theater",
+    "amount": "28.50",
+    "timestamp": "2023-07-20T20:00:00Z",
+    "transaction_id": "tx_12351",
+    "description": "Movie tickets"
+  },
+  {
+    "location": "Utility Company",
+    "amount": "125.00",
+    "timestamp": "2023-07-21T09:00:00Z",
+    "transaction_id": "tx_12352",
+    "description": "Electricity bill"
+  },
+  {
+    "location": "Gym",
+    "amount": "50.00",
+    "timestamp": "2023-07-21T17:30:00Z",
+    "transaction_id": "tx_12353",
+    "description": "Monthly membership"
+  },
+  {
+    "location": "Public Transport",
+    "amount": "40.00",
+    "timestamp": "2023-07-22T08:00:00Z",
+    "transaction_id": "tx_12354",
+    "description": "Monthly pass"
+  }
+]
