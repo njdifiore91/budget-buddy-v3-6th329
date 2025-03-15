@@ -1,0 +1,42 @@
+[
+  {
+    "spending_category": "Groceries",
+    "weekly_amount": "150.00"
+  },
+  {
+    "spending_category": "Dining Out",
+    "weekly_amount": "75.00"
+  },
+  {
+    "spending_category": "Gas & Fuel",
+    "weekly_amount": "50.00"
+  },
+  {
+    "spending_category": "Entertainment",
+    "weekly_amount": "40.00"
+  },
+  {
+    "spending_category": "Shopping",
+    "weekly_amount": "100.00"
+  },
+  {
+    "spending_category": "Coffee Shops",
+    "weekly_amount": "20.00"
+  },
+  {
+    "spending_category": "Pharmacy",
+    "weekly_amount": "25.00"
+  },
+  {
+    "spending_category": "Health & Fitness",
+    "weekly_amount": "50.00"
+  },
+  {
+    "spending_category": "Home Improvement",
+    "weekly_amount": "40.00"
+  },
+  {
+    "spending_category": "Subscriptions",
+    "weekly_amount": "30.00"
+  }
+]
