@@ -1,0 +1,22 @@
+[
+  {
+    "accountId": "acct_checking123",
+    "accountType": "checking",
+    "accountName": "Primary Checking",
+    "balance": "1250.67",
+    "availableBalance": "1200.00",
+    "currency": "USD",
+    "status": "active",
+    "lastUpdated": "2023-07-21T08:30:45Z"
+  },
+  {
+    "accountId": "acct_savings456",
+    "accountType": "savings",
+    "accountName": "Emergency Fund",
+    "balance": "5432.10",
+    "availableBalance": "5432.10",
+    "currency": "USD",
+    "status": "active",
+    "lastUpdated": "2023-07-21T08:30:45Z"
+  }
+]
