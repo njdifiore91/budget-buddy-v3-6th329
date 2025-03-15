@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  budget-test:
+    # Main test container running the Budget Management Application tests
+    build:
+      context: ../..
+      dockerfile: test/docker/Dockerfile.test
+    volumes:
+      - ../../:/app
+    environment:
+      - PYTHONPATH=/app
+      - TEST_ENVIRONMENT=container
+      - CAPITAL_ONE_API_URL=http://mock-capital-one:8080
+      - GOOGLE_SHEETS_API_URL=http://mock-google-sheets:8080
+      - GEMINI_API_URL=http://mock-gemini:8080
+      - GMAIL_API_URL=http://mock-gmail:8080
+    depends_on:
+      - mock-capital-one
+      - mock-google-sheets
+      - mock-gemini
+      - mock-gmail
+    command: pytest -xvs --cov=backend --cov-report=term-missing
+
+  mock-capital-one:
+    # Mock server for Capital One API
+    image: wiremock/wiremock:latest
+    volumes:
+      - ../../test/fixtures/json/api_responses/capital_one:/home/wiremock/mappings
+    ports:
+      - "8081:8080"
+    command: --verbose
+
+  mock-google-sheets:
+    # Mock server for Google Sheets API
+    image: wiremock/wiremock:latest
+    volumes:
+      - ../../test/fixtures/json/api_responses/google_sheets:/home/wiremock/mappings
+    ports:
+      - "8082:8080"
+    command: --verbose
+
+  mock-gemini:
+    # Mock server for Gemini AI API
+    image: wiremock/wiremock:latest
+    volumes:
+      - ../../test/fixtures/json/api_responses/gemini:/home/wiremock/mappings
+    ports:
+      - "8083:8080"
+    command: --verbose
+
+  mock-gmail:
+    # Mock server for Gmail API
+    image: wiremock/wiremock:latest
+    volumes:
+      - ../../test/fixtures/json/api_responses/gmail:/home/wiremock/mappings
+    ports:
+      - "8084:8080"
+    command: --verbose
+
+networks:
+  default:
+    name: test-network
+
+volumes:
+  test-data:
+    # Volume for persisting test data between container restarts
